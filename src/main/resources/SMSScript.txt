@@ -1,0 +1,112 @@
+insert into users(username,password,status,type,entityid,admin) values('admin','admin123','1','admin','1','system');
+
+
+CREATE TABLE auth_model (
+	id serial4 NOT NULL,
+	status int4 NOT NULL,
+	username varchar NOT NULL,
+	password varchar NOT NULL,
+	admin varchar NOT NULL,
+	createdtime varchar NULL,
+	modifiedtime varchar NULL,
+	CONSTRAINT auth_model_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE awsconfig (
+	id SERIAL  PRIMARY KEY,
+	awsaccesskeyid varchar NULL,
+	awssecretkeyid varchar NULL,
+	awsregion varchar NULL,
+	bucketname varchar NULL
+);
+
+CREATE TABLE creditsmodel (
+	id SERIAL  PRIMARY KEY,	
+	customerid varchar NULL,
+	avalcredits bigint NULL,
+	createdby varchar NULL,
+	modifiedby varchar NULL,
+	createdtime varchar NULL,
+	modifiedtime varchar NULL
+);
+
+CREATE TABLE customermodel (
+	id SERIAL  PRIMARY KEY,	
+	customerid varchar NULL,
+	customername varchar NULL,
+	contactnumber varchar NULL,
+	customerauthkey varchar NULL,
+	status int NULL,
+	createdby varchar NULL,
+	modifiedby varchar NULL,
+	createdtime varchar NULL,
+	modifiedtime varchar NULL
+);
+
+
+CREATE TABLE filemodel (
+	id SERIAL  PRIMARY KEY,	
+	cmpnid int4 NULL,
+	filename varchar NULL,
+	upldfilename varchar NULL,
+	count int NULL,
+	createdby varchar NULL,
+	modifiedby varchar NULL,
+	createdtime varchar NULL,
+	modifiedtime varchar NULL
+);
+CREATE TABLE groupmodel (
+	id SERIAL  PRIMARY KEY,	
+	groupname varchar NULL,
+	grouptype varchar NULL,
+	groupdesc varchar NULL,
+	createdby varchar NULL,
+	modifiedby varchar NULL,
+	createdtime varchar NULL,
+	modifiedtime varchar NULL
+);
+
+CREATE TABLE groupmembers (
+	id SERIAL  PRIMARY KEY,
+	groupid int4 NOT NULL,
+	phonenumber varchar NULL,
+	membername varchar NULL,
+	createdby varchar NULL,
+	modifiedby varchar NULL,
+	createdtime varchar NULL,
+	modifiedtime varchar NULL
+);
+
+CREATE TABLE schedulemodel (
+	id SERIAL  PRIMARY KEY,
+	cmpnId int4 NOT NULL,
+	schDate varchar NULL,
+	schTime varchar NULL,
+	schZone varchar NULL,
+	createdby varchar NULL,
+	modifiedby varchar NULL,
+	createdtime varchar NULL,
+	modifiedtime varchar NULL
+);
+
+
+CREATE TABLE messagemodel (
+	id SERIAL  PRIMARY KEY,
+	status int4 NOT NULL,
+	phonenumber varchar NULL,
+	message varchar NULL,
+	senderid varchar NULL,
+	createdby varchar NULL,
+	modifiedby varchar NULL,
+	createdtime varchar NULL,
+	modifiedtime varchar NULL
+);
+
+CREATE TABLE senderidmodel (
+	id SERIAL  PRIMARY KEY,	
+	senderid varchar NULL,
+	createdby varchar NULL,
+	modifiedby varchar NULL,
+	createdtime varchar NULL,
+	modifiedtime varchar NULL
+);
