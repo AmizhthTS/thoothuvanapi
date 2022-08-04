@@ -36,6 +36,11 @@ public class UserModel  extends  User {
 	
 	
 	@NotNull
+	@ColumnDefault(value="prepaid")
+	private String billtype;
+	
+	
+	@NotNull
 	@ColumnDefault(value="user")
 	private String type;
 
