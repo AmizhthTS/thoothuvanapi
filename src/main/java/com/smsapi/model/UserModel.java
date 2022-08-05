@@ -36,13 +36,13 @@ public class UserModel  extends  User {
 	
 	
 	@NotNull
-	@ColumnDefault(value="prepaid")
+	@ColumnDefault(value="'prepaid'")
 	private String billtype;
 	
 	
 	@NotNull
-	@ColumnDefault(value="user")
-	private String type;
+	@ColumnDefault(value="'user'")
+	private String role;
 
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int entityid;
@@ -79,6 +79,8 @@ public class UserModel  extends  User {
 	@PrePersist
 	public void setCreationDateTime() {
 		this.createdtime = LocalDateTime.now();
+		this.modifiedtime = LocalDateTime.now();
+
 		 double scale = Math.pow(10, 2);
 		 this.profitpercentage = Math.round(this.profitpercentage * scale) / scale;
 	

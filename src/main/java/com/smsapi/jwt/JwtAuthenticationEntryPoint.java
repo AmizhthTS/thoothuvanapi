@@ -13,9 +13,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+import exception.AdminNameMissMatched;
 import exception.AdminUserNotAvailable;
+import exception.BilltypeNotPrepaid;
 import exception.CreateUserNotAdmin;
 import exception.PasswordMissMatch;
+import exception.UserNotRegisteredForCredit;
 import exception.UsernameExsist;
 import exception.UsernameNotExsist;
 import exception.WrongPassword;
@@ -65,6 +68,18 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 		}else if(authException instanceof UsernameNotExsist){
 			
 			response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, "UsernameNotExsist");
+
+		}else if(authException instanceof BilltypeNotPrepaid){
+			
+			response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, "BilltypeNotPrepaid");
+
+		}else if(authException instanceof AdminNameMissMatched){
+			
+			response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, "AdminNameMissMatched");
+
+		}else if(authException instanceof UserNotRegisteredForCredit){
+			
+			response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, "UserNotRegisteredForCredit");
 
 		}else {
 			

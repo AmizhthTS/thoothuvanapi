@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smsapi.model.ChangePasswordModel;
 import com.smsapi.model.UserModel;
-import com.smsapi.service.AuthService;
+import com.smsapi.service.UserService;
 
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
 
 	@Autowired
-	private AuthService authService;
+	private UserService authService;
 
 	
 	@PostMapping("/changepassword")
