@@ -7,22 +7,25 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.smsapi.dao.OldPasswordDao;
 import com.smsapi.dao.UserDao;
 import com.smsapi.dao.UserDaoUpdate;
+import com.smsapi.exception.AdminUserNotAvailable;
+import com.smsapi.exception.CreateUserNotAdmin;
+import com.smsapi.exception.PasswordMissMatch;
+import com.smsapi.exception.UsernameExsist;
+import com.smsapi.exception.WrongPassword;
 import com.smsapi.model.ChangePasswordModel;
 import com.smsapi.model.UserModel;
-
-import exception.AdminUserNotAvailable;
-import exception.CreateUserNotAdmin;
-import exception.PasswordMissMatch;
-import exception.UsernameExsist;
-import exception.WrongPassword;
 
 @Service
 @Transactional
 public class UserService {
 
 
+	@Autowired
+	private OldPasswordDao oldpasswordDao;
+	
 	@Autowired
 	private UserDao userDao;
 	
@@ -46,6 +49,10 @@ public class UserService {
 				
 				
 				authModel.setPassword(passwordDTO.getChangepassword());
+				
+				authModel.setPasswordactivation(0);
+				
+				oldpasswordDao.save(authModel.getOldPasswordModel());
 				
 				userDao.saveAndFlush(authModel);
 				

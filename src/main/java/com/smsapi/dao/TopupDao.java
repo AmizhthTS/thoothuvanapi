@@ -6,20 +6,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
-import com.smsapi.model.TopupModel;
+import com.smsapi.model.TopupHistoryModel;
 
 
 @Repository
-public interface TopupDao extends JpaRepository<TopupModel, Integer> {
+public interface TopupDao extends JpaRepository<TopupHistoryModel, Integer> {
 
 	@SuppressWarnings("unchecked")
 	@Modifying(flushAutomatically = true)
-	TopupModel saveAndFlush(TopupModel entity);
+	TopupHistoryModel saveAndFlush(TopupHistoryModel entity);
 	
-	List<TopupModel> findByAdminEquals(String admin);
+	List<TopupHistoryModel> findByAdminEquals(String admin);
 	
-	List<TopupModel> findByUsernameEquals(String username);
+	List<TopupHistoryModel> findByUsernameEquals(String username);
 
-	List<TopupModel> findByStatusEquals(String status);
+	List<TopupHistoryModel> findByStatusEquals(String status);
 
 }

@@ -13,15 +13,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import exception.AdminNameMissMatched;
-import exception.AdminUserNotAvailable;
-import exception.BilltypeNotPrepaid;
-import exception.CreateUserNotAdmin;
-import exception.PasswordMissMatch;
-import exception.UserNotRegisteredForCredit;
-import exception.UsernameExsist;
-import exception.UsernameNotExsist;
-import exception.WrongPassword;
+import com.smsapi.exception.AdminNameMissMatched;
+import com.smsapi.exception.AdminUserNotAvailable;
+import com.smsapi.exception.BilltypeNotPrepaid;
+import com.smsapi.exception.CreateUserNotAdmin;
+import com.smsapi.exception.PasswordMissMatch;
+import com.smsapi.exception.UserNotRegisteredForCredit;
+import com.smsapi.exception.UsernameExsist;
+import com.smsapi.exception.UsernameNotExsist;
+import com.smsapi.exception.WrongPassword;
 
 
 @Component

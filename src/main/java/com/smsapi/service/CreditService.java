@@ -9,15 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.smsapi.constant.Role;
 import com.smsapi.dao.CreditDao;
 import com.smsapi.dao.TopupDao;
+import com.smsapi.dao.TopupLogDao;
 import com.smsapi.dao.UserDao;
+import com.smsapi.exception.AdminNameMissMatched;
+import com.smsapi.exception.BilltypeNotPrepaid;
+import com.smsapi.exception.UserNotRegisteredForCredit;
+import com.smsapi.exception.UsernameNotExsist;
 import com.smsapi.model.CreditModel;
-import com.smsapi.model.TopupModel;
+import com.smsapi.model.TopupHistoryModel;
+import com.smsapi.model.TopupLogModel;
+import com.smsapi.model.UserAloneModel;
 import com.smsapi.model.UserModel;
-
-import exception.AdminNameMissMatched;
-import exception.BilltypeNotPrepaid;
-import exception.UserNotRegisteredForCredit;
-import exception.UsernameNotExsist;
 
 @Service
 @Transactional
@@ -33,8 +35,19 @@ public class CreditService {
 	@Autowired
 	private UserDao userDao;
 	
+	@Autowired
+	private TopupLogDao topuplogDao;
 	
-	
+	public List<String> getUserList(){
+		
+		List<CreditModel> credituserlist=creditDao.findAll();
+		
+		UserAloneModel bean=new UserAloneModel();
+		
+		bean.setUsers(credituserlist);
+		
+		return bean.getUsernamelist();
+	}
 	
 	public CreditModel addUser(CreditModel createDTO)   {
 
@@ -85,7 +98,7 @@ public class CreditService {
 	
 	
 	
-	public List<TopupModel> topupCredit(TopupModel createDTO)   {
+	public List<TopupHistoryModel> topupCredit(TopupHistoryModel createDTO)   {
 
 		CreditModel authModel = creditDao.findByUsernameEquals(createDTO.getUsername());
 		
@@ -129,6 +142,18 @@ public class CreditService {
 						
 	}
 
+	
+	
+	
+	public List<TopupHistoryModel> getTopuphistory()   {
+
+		return topupDao.findAll();
+	}
+						
+	public List<TopupLogModel> getTopuplog()   {
+
+		return topuplogDao.findAll();
+	}
 
 
 }

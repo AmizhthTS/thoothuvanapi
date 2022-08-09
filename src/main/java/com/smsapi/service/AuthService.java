@@ -12,22 +12,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.smsapi.dao.OldPasswordDao;
 import com.smsapi.dao.UserDao;
 import com.smsapi.dao.UserDaoUpdate;
 import com.smsapi.jwt.JwtTokenUtil;
-import com.smsapi.model.ChangePasswordModel;
+import com.smsapi.model.PasswordAloneModel;
 import com.smsapi.model.UserModel;
-
-import exception.AdminUserNotAvailable;
-import exception.CreateUserNotAdmin;
-import exception.PasswordMissMatch;
-import exception.UsernameExsist;
-import exception.WrongPassword;
 
 @Service
 @Transactional
 public class AuthService {
 
+	@Autowired
+	private OldPasswordDao oldpasswordDao;
+	
 	@Autowired
 	private UserDao userDao;
 	
@@ -42,13 +40,24 @@ public class AuthService {
 
 	
 	public UserModel login(UserModel userDTO)  {
-		System.out.println("AuthService.login  (userDTO.getUserName() : "+userDTO.getUsername()+ " userDTO.getPassword() : "+userDTO.getPassword() );
 		List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<SimpleGrantedAuthority>();
 
 		UserModel authModel = userDao.findByUsernameEquals(userDTO.getUsername());
 		if (authModel != null) {
 			
-			if(authModel.getPassword().equals(userDTO.getPassword())) {
+			boolean passwordmatch=authModel.getPassword().equals(userDTO.getPassword());
+			
+			if(!passwordmatch) {
+				
+				if(authModel.getPasswordactivation()==0) {
+					
+					PasswordAloneModel passwordlist=new PasswordAloneModel();
+					
+					passwordlist.setPasswordlist(oldpasswordDao.findByUsernameEquals(authModel.getUsername()));
+					passwordmatch=passwordlist.getPasswordlist().contains(userDTO.getPassword());
+				}
+			}
+			if(passwordmatch) {
 				
 				
 				if(authModel.getStatus()==1) {
@@ -60,6 +69,12 @@ public class AuthService {
 					retAuthDTO.setStatus(1);
 					retAuthDTO.setId(authModel.getId());
 				
+					if(retAuthDTO.getPasswordactivation()==0) {
+						
+						retAuthDTO.setPasswordactivation(1);
+						
+						userUpdateDao.save(retAuthDTO);
+					}
 					return retAuthDTO;
 				
 				}else {

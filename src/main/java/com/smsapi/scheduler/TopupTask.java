@@ -9,14 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.smsapi.constant.TopupStatus;
 import com.smsapi.dao.CreditDao;
-import com.smsapi.dao.CreditDaoUpdate;
 import com.smsapi.dao.TopupDao;
-import com.smsapi.dao.TopupDaoUpdate;
 import com.smsapi.dao.TopupTaskDaoUpdate;
-import com.smsapi.dao.UserDao;
+import com.smsapi.model.CreditBalanceModel;
 import com.smsapi.model.CreditModel;
-import com.smsapi.model.TopupModel;
-import com.smsapi.model.TopupTaskModel;
+import com.smsapi.model.TopupHistoryModel;
+import com.smsapi.model.TopupLogModel;
 
 
 @Service
@@ -35,24 +33,30 @@ public class TopupTask {
 	@Scheduled(fixedDelay=1000)
 	public void doProcess() {
 	    
-		List<TopupModel> topuplist=topupDao.findByStatusEquals(TopupStatus.INITIATED);
+		List<TopupHistoryModel> topuplist=topupDao.findByStatusEquals(TopupStatus.INITIATED);
 
 
 		
 		for(int i=0;i<topuplist.size();i++) {
 			
-			System.out.println("Task");
-			TopupModel topup=topuplist.get(i);			
+			TopupHistoryModel topup=topuplist.get(i);			
 			topup.setModifiedDateTime();
-			
+			TopupLogModel entity=new TopupLogModel();
+			entity.setTopupmodel(topup);
 			
 			CreditModel topupuser=creditDao.findByUsernameEquals(topup.getUsername());
 
+			CreditBalanceModel before=new CreditBalanceModel();
+			before.setBalance(topupuser.getTotalbalance());
+			before.setType("before");
+			
 			topupuser.setTotalbalance(topupuser.getTotalbalance()+topup.getTopupvalue());
 			
-			TopupTaskModel entity=new TopupTaskModel();
-			entity.setTopupmodel(topup);
-			entity.setCreditmodel(topupuser);
+			CreditBalanceModel after=new CreditBalanceModel();
+			after.setBalance(topupuser.getTotalbalance());
+			after.setType("after");
+			entity.setBefore(before);
+			entity.setAfter(after);
 			topup.setStatus(TopupStatus.DONE);
 			topuptaskDaoUpdate.save(entity);
 			

@@ -14,7 +14,6 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -29,6 +28,9 @@ public class UserModel  extends  User {
 	private int id;
 	private int status;
 	
+	@NotNull
+	@ColumnDefault(value="1")
+	private int passwordactivation=1;
 	
 	@NotNull
 	@ColumnDefault(value="0.00")
@@ -95,6 +97,15 @@ public class UserModel  extends  User {
 	}
 	
 
+	public OldPasswordModel getOldPasswordModel() {
+		
+		OldPasswordModel bean=new OldPasswordModel();
+		
+		bean.setUsername(getUsername());
+		bean.setPassword(getPassword());
+		
+		return bean;
+	}
 	public String getUsername() {
 		
 		return this.username.toLowerCase();

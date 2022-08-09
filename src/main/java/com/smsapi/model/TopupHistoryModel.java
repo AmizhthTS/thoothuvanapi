@@ -17,7 +17,7 @@ import lombok.Data;
 
 @Data
 @Entity(name = "topup_history")
-public class TopupModel{
+public class TopupHistoryModel{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

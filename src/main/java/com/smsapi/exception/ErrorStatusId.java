@@ -1,4 +1,4 @@
-package exception;
+package com.smsapi.exception;
 
 public class ErrorStatusId {
 

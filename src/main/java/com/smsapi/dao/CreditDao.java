@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import com.smsapi.model.CreditModel;
+import com.smsapi.model.UserAloneModel;
 import com.smsapi.model.UserModel;
 
 
@@ -16,6 +17,7 @@ public interface CreditDao extends JpaRepository<CreditModel, Integer> {
 
 	CreditModel findByUsernameEquals(String username );
 	
+	List<CreditModel>  findAll() ;
 	
 	@SuppressWarnings("unchecked")
 	@Modifying(flushAutomatically = true)
