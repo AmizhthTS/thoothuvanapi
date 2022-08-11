@@ -47,6 +47,15 @@ public class UserController {
 	}
 	
 	
+	@PostMapping("/get")
+	public ResponseEntity<?> getUser(@RequestBody UserModel createDTO) {
+
+		UserModel authOTPVerifyResponseModel = authService.getUser(createDTO);
+		return ResponseEntity.ok().body(authOTPVerifyResponseModel);
+	
+	}
+	
+	
 	@PostMapping("/list")
 	public ResponseEntity<?> listUser(@RequestBody UserModel createDTO) {
 

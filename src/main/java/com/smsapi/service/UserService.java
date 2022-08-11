@@ -157,6 +157,15 @@ public class UserService {
 	}
 	
 	
+	public UserModel getUser(UserModel createDTO)   {
+
+		UserModel userModel = userDao.findByUsernameEquals(createDTO.getUsername());
+		
+		
+		return userModel;
+						
+	}
+	
 	
 	
 	public List<UserModel> listUser(UserModel createDTO)   {
