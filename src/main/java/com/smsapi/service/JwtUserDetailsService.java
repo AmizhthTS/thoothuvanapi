@@ -24,7 +24,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 		userModel = userdao.findByUsernameEquals(username);
 
 		if (userModel !=null ) {
-			return userModel;
+			return userModel.getUser();
 		} else {
 				throw new UsernameNotFoundException("User not found with username: " + username);
 		}

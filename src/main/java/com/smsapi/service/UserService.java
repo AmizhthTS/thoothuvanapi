@@ -14,6 +14,7 @@ import com.smsapi.exception.AdminUserNotAvailable;
 import com.smsapi.exception.CreateUserNotAdmin;
 import com.smsapi.exception.PasswordMissMatch;
 import com.smsapi.exception.UsernameExsist;
+import com.smsapi.exception.UsernameNotExsist;
 import com.smsapi.exception.WrongPassword;
 import com.smsapi.model.ChangePasswordModel;
 import com.smsapi.model.UserModel;
@@ -115,7 +116,7 @@ public class UserService {
 		
 		if(userModel==null) {
 			
-			throw new UsernameExsist("UsernameNotExsists");
+			throw new UsernameNotExsist("UsernameNotExsists");
 			
 		}else {
 			
@@ -161,6 +162,11 @@ public class UserService {
 
 		UserModel userModel = userDao.findByUsernameEquals(createDTO.getUsername());
 		
+		if(userModel==null) {
+			
+			throw new UsernameNotExsist("UsernameNotExsists");
+			
+		}
 		
 		return userModel;
 						
@@ -174,7 +180,7 @@ public class UserService {
 		
 		if(userModel==null) {
 			
-			throw new UsernameExsist("UsernameNotExsists");
+			throw new UsernameNotExsist("UsernameNotExsists");
 			
 		}else {
 			

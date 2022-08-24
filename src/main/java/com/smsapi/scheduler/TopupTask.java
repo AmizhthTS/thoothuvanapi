@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.smsapi.constant.TopupStatus;
 import com.smsapi.dao.CreditDao;
 import com.smsapi.dao.TopupDao;
-import com.smsapi.dao.TopupTaskDaoUpdate;
+import com.smsapi.dao.TopupLogDao;
 import com.smsapi.model.CreditBalanceModel;
 import com.smsapi.model.CreditModel;
 import com.smsapi.model.TopupHistoryModel;
@@ -28,7 +28,7 @@ public class TopupTask {
 	private CreditDao creditDao;
 	
 	@Autowired
-	private TopupTaskDaoUpdate topuptaskDaoUpdate;
+	private TopupLogDao topuptaskDaoUpdate;
 	
 	@Scheduled(fixedDelay=1000)
 	public void doProcess() {

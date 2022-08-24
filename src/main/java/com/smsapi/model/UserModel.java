@@ -17,12 +17,18 @@ import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
 @Entity(name = "users")
-public class UserModel  extends  User {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class UserModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -66,17 +72,23 @@ public class UserModel  extends  User {
 	@Transient
 	private String token;
 	
-	
+	/*
 	public UserModel() {
 		
-		super(System.getProperty("smsapi.username"),System.getProperty("smsapi.password"),new ArrayList<GrantedAuthority>());
+		super(System.getProperty("smsapi.username"),System.getProperty("smsapi.password"),);
 	}
 	public UserModel(String username, String password,
 			Collection<? extends GrantedAuthority> authorities) {
 		super(username,password,authorities);
 	}
 
-
+*/
+	public User getUser() {
+		
+		User user=new User(username,password,new ArrayList<GrantedAuthority>());
+		
+		return user;
+	}
 	
 	@PrePersist
 	public void setCreationDateTime() {
