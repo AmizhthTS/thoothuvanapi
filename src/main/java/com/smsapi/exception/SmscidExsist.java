@@ -2,10 +2,11 @@ package com.smsapi.exception;
 
 import org.springframework.security.core.AuthenticationException;
 
-public class AdminNameMissMatched extends AuthenticationException{
+public class SmscidExsist extends AuthenticationException{
 
-	public AdminNameMissMatched(String msg) {
+	public SmscidExsist(String msg) {
 		super(msg);
 	}
 
+	
 }

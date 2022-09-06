@@ -1,12 +1,15 @@
 package com.smsapi.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.smsapi.constant.Role;
 import com.smsapi.dao.OldPasswordDao;
 import com.smsapi.dao.UserDao;
 import com.smsapi.dao.UserDaoUpdate;
@@ -17,21 +20,25 @@ import com.smsapi.exception.UsernameExsist;
 import com.smsapi.exception.UsernameNotExsist;
 import com.smsapi.exception.WrongPassword;
 import com.smsapi.model.ChangePasswordModel;
+import com.smsapi.model.RoleCache;
+import com.smsapi.model.UserCacheModel;
 import com.smsapi.model.UserModel;
 
 @Service
 @Transactional
 public class UserService {
 
+	@Autowired @Qualifier("rolecache") private RoleCache rolecache;
 
-	@Autowired
-	private OldPasswordDao oldpasswordDao;
+	@Autowired @Qualifier("smsrolesid") private List<Integer> smsrolesid;
 	
-	@Autowired
-	private UserDao userDao;
+	@Autowired	private OldPasswordDao oldpasswordDao;
 	
-	@Autowired
-	private UserDaoUpdate userUpdateDao;
+	@Autowired	private UserDao userDao;
+	
+	@Autowired	private UserDaoUpdate userUpdateDao;
+	
+	@Autowired private UserCacheModel usercache;
 	
 	public UserModel passwordchange(ChangePasswordModel passwordDTO)   {
 
@@ -87,22 +94,28 @@ public class UserService {
 			authModel = userDao.findByUsernameEquals(createDTO.getAdmin());
 			if(authModel!=null) {
 				
-			if(authModel.getRole().equals("user")) {
+			if(rolecache.getRole(authModel.getRoleid()).getRole().equals(Role.USER)) {
 				
 				throw new CreateUserNotAdmin("Creating User is not Admin");
 			}
 			
+			
+			}else {
+				
+				if(!rolecache.getRole(createDTO.getRoleid()).getRole().equals(Role.SYSTEM)) {
+
+				throw new AdminUserNotAvailable("Admin User not Available");
+				
+				}
+
+				
+			}
 			userDao.saveAndFlush(createDTO);
 			
 			return userDao.findByUsernameEquals(createDTO.getUsername());
 
 			
-			}else {
-				
-				throw new AdminUserNotAvailable("Admin User not Available");
-
-				
-			}
+			
 
 		}
 						
@@ -123,12 +136,13 @@ public class UserService {
 			UserModel authModel = userDao.findByUsernameEquals(createDTO.getAdmin());
 			if(authModel!=null) {
 				
-			if(authModel.getRole().equals("user")) {
+			if(rolecache.getRole(authModel.getRoleid()).getRole().equals("user")) {
 				
 				throw new CreateUserNotAdmin("Creating User is not Admin");
 			}
 			
-			userModel.setRole(createDTO.getRole());
+		
+			userModel.setRoleid(createDTO.getRoleid());
 			
 			userModel.setBilltype(createDTO.getBilltype());
 
@@ -200,6 +214,12 @@ public class UserService {
 
 		}
 						
+	}
+
+	
+	public void loadUserCache() {
+		
+		usercache.updateUserModel(UUID.randomUUID().toString(), userDao.findByRoleidIn(smsrolesid));
 	}
 
 

@@ -17,6 +17,8 @@ import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +34,7 @@ public class UserModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private int status;
+	private int status=1;
 	
 	@NotNull
 	@ColumnDefault(value="1")
@@ -45,12 +47,11 @@ public class UserModel {
 	
 	@NotNull
 	@ColumnDefault(value="'prepaid'")
-	private String billtype;
+	private String billtype="postpaid";
 	
 	
 	@NotNull
-	@ColumnDefault(value="'user'")
-	private String role;
+	private int roleid;
 
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int entityid;
@@ -67,6 +68,9 @@ public class UserModel {
 	private LocalDateTime createdtime;
 	
 	private LocalDateTime modifiedtime;
+	
+	private int balanceavailable=1;
+
 
 	
 	@Transient

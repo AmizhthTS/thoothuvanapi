@@ -7,21 +7,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 
 @Data
-@Entity(name = "oldpassword")
-public class OldPasswordModel {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "roles")
+public class RoleModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private int roleid;
 	
-	private String username;
-
-	private String password;
-	
-	
-	
+	private String role;
 }

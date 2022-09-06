@@ -3,6 +3,7 @@ package com.smsapi.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import com.smsapi.exception.BilltypeNotPrepaid;
 import com.smsapi.exception.UserNotRegisteredForCredit;
 import com.smsapi.exception.UsernameNotExsist;
 import com.smsapi.model.CreditModel;
+import com.smsapi.model.RoleCache;
 import com.smsapi.model.TopupHistoryModel;
 import com.smsapi.model.TopupLogModel;
 import com.smsapi.model.UserAloneModel;
@@ -24,19 +26,16 @@ import com.smsapi.model.UserModel;
 @Service
 @Transactional
 public class CreditService {
-
-	@Autowired
-	private TopupDao topupDao;
-
-	@Autowired
-	private CreditDao creditDao;
 	
+	@Autowired @Qualifier("rolecache") private RoleCache rolecache;
 
-	@Autowired
-	private UserDao userDao;
+	@Autowired private TopupDao topupDao;
+
+	@Autowired private CreditDao creditDao;
 	
-	@Autowired
-	private TopupLogDao topuplogDao;
+	@Autowired private UserDao userDao;
+	
+	@Autowired private TopupLogDao topuplogDao;
 	
 	public List<String> getUserList(){
 		
@@ -78,7 +77,8 @@ public class CreditService {
 				UserModel admin=userDao.findByUsernameEquals(createDTO.getAdmin());
 				
 				
-				if(admin==null||admin.getRole().equals(Role.CUSTOMER)||admin.getRole().equals(Role.ADMIN)||admin.getRole().equals(Role.USER)) {
+				if(admin==null||rolecache.getRole(admin.getRoleid()).getRole().equals(Role.MASTER)||rolecache.getRole(admin.getRoleid()).getRole().equals(Role.ADMIN)||rolecache.getRole(admin.getRoleid()).getRole().equals(Role.USER)) {
+					
 					
 					throw new UserNotRegisteredForCredit("UserNotRegisteredForCredit");
 
@@ -124,7 +124,7 @@ public class CreditService {
 				UserModel admin=userDao.findByUsernameEquals(createDTO.getAdmin());
 				
 				
-				if(admin.getRole().equals(Role.CUSTOMER)||admin.getRole().equals(Role.ADMIN)||admin.getRole().equals(Role.USER)) {
+				if(admin==null||rolecache.getRole(admin.getRoleid()).getRole().equals(Role.MASTER)||rolecache.getRole(admin.getRoleid()).getRole().equals(Role.ADMIN)||rolecache.getRole(admin.getRoleid()).getRole().equals(Role.USER)) {
 					
 					throw new UserNotRegisteredForCredit("UserNotRegisteredForCredit");
 
