@@ -67,8 +67,13 @@
           <version>${rest-assured.version}</version>
       </dependency>
       
-      <!-- 
-
+     <dependency>
+          <groupId>redisapi</groupId>
+          <artifactId>redisapi</artifactId>
+          <version>1.0</version>
+      </dependency>
+      
+<!-- 
         <dependency>
     <groupId>org.junit.vintage</groupId>
     <artifactId>junit-vintage-engine</artifactId>
